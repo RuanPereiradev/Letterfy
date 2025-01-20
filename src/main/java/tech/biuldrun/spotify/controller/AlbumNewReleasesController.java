@@ -14,14 +14,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/spotify/api")
-public class AlbumController {
+public class AlbumNewReleasesController {
 
     private final AuthSpotifyClient authSpotifyClient;
 
     private final AlbumNewRealeasesSpotifyClient albumNewRealeasesSpotifyClient;
 
-    public AlbumController(AuthSpotifyClient authSpotifyClient,
-                           AlbumNewRealeasesSpotifyClient albumNewRealeasesSpotifyClient) {
+    public AlbumNewReleasesController(AuthSpotifyClient authSpotifyClient,
+                                      AlbumNewRealeasesSpotifyClient albumNewRealeasesSpotifyClient) {
         this.authSpotifyClient = authSpotifyClient;
         this.albumNewRealeasesSpotifyClient = albumNewRealeasesSpotifyClient;
     }

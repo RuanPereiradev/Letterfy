@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AlbumResponse {
+public class AlbumNewReleasesResponse {
 
-    private AlbumWrapper albums;
+    private AlbumNewReleasesWrapper albums;
 
 }
