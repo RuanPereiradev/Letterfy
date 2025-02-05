@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  mysql:
+    image: 'mysql:latest'
+    environment:
+      - MYSQL_DATABASE=mydatabase
+      - MYSQL_PASSWORD=secret
+      - MYSQL_ROOT_PASSWORD=verysecret
+      - MYSQL_USER=myuser
+    ports:
+      - '3306:3306'  # Mapeia a porta 3306 do MySQL para a mesma porta na máquina local
+    networks:
+      - mynetwork
+    volumes:
+      - mysql-data:/var/lib/mysql  # Para persistência de dados
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  mysql-data:

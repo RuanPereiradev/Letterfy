@@ -109,34 +109,6 @@ src/main/java/tech/biuldrun/spotify
 
 ```
 
-
-### Database Overview  
-
-
-![Captura de tela de 2024-12-30 11-28-24](https://github.com/user-attachments/assets/e7b9d739-fb5b-4b02-a6d5-2feb61664e6b)
-
-The database supports the core features of the system, including user authentication, music content management, and user interactions with albums and songs. Below is a summary of its structure:  
-
-- **Users and Authentication**  
-  - Handles user registration, login, and password recovery.  
-  - Supports social account logins.  
-
-- **Music Content Management**  
-  - Stores albums, songs, artists, and genres.  
-  - Includes details like album release dates, song durations, and genre classifications.  
-
-- **Reviews and Interactions**  
-  - Enables users to leave reviews and rate albums/songs with a star-based system.  
-  - Allows users to create and manage custom playlists.  
-
-Key relationships ensure data consistency, such as:  
-- Albums linked to artists and genres.  
-- Songs associated with albums and artists.  
-- User reviews tied to specific albums or songs.  
-
-This database design ensures scalability and maintains performance for a robust user experience.  
-
-
 ## Known Issues
 
 - Ensure the `Authorization` header includes a valid Bearer token.

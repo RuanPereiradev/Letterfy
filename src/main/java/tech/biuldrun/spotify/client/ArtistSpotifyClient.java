@@ -6,15 +6,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @FeignClient(
-        name = "AlbumSpotifyClient",
+        name = "ArtistSpotifyClient",
         url = "https://api.spotify.com"
 )
+public interface ArtistSpotifyClient {
 
-public interface AlbumSpotifyClient {
-
-        @GetMapping(value = "/v1/albums/{id}")
-        AlbumResponse getAlbum(@RequestHeader("Authorization") String authorization,
-                               @PathVariable("id") String albumId
-        );
-
+    @GetMapping(value = "/v1/artists/{id}")
+    ArtistResponse getArtist(@RequestHeader("Authorization") String authorization,
+                             @PathVariable("id") String artistaId
+    );
 }
