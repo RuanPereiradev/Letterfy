@@ -1,4 +1,4 @@
-package tech.biuldrun.spotify.controller;
+package tech.biuldrun.spotify.controller.spotify;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +38,36 @@ public class TrackController {
         return ResponseEntity.ok(response);
     }
 
+    @RestController
+    @RequestMapping("/spotify/api")
+    public static class AlbumNewReleasesController {
+
+        private final AuthSpotifyClient authSpotifyClient;
+
+        private final AlbumNewRealeasesSpotifyClient albumNewRealeasesSpotifyClient;
+
+        public AlbumNewReleasesController(AuthSpotifyClient authSpotifyClient,
+                                          AlbumNewRealeasesSpotifyClient albumNewRealeasesSpotifyClient) {
+            this.authSpotifyClient = authSpotifyClient;
+            this.albumNewRealeasesSpotifyClient = albumNewRealeasesSpotifyClient;
+        }
+
+        @GetMapping("/albuns")
+        public ResponseEntity<List<AlbumNewReleases>> helloWorld(){
+
+            var request  = new LoginRequest(
+                    "client_credentials",
+                    "7ef1cba7337f41ff8c8c5efc69a661af",
+                    "ef9a6e1617fd4c87b710145a4efd0e54"
+            );
+            var token = authSpotifyClient.login(request).getAccessToken();
+
+            var response = albumNewRealeasesSpotifyClient.getReleases("Bearer " + token);
+
+
+            return ResponseEntity.ok(response.getAlbums().getItems());
+        }
+    }
 }
 
 

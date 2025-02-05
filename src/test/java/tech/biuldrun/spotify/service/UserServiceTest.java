@@ -9,8 +9,8 @@ import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import tech.biuldrun.spotify.controller.CreateUserDto;
-import tech.biuldrun.spotify.controller.UpdateUserDto;
+import tech.biuldrun.spotify.controller.dto.CreateUserDto;
+import tech.biuldrun.spotify.controller.dto.UpdateUserDto;
 import tech.biuldrun.spotify.entity.User;
 import tech.biuldrun.spotify.repository.UserRepository;
 

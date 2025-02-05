@@ -1,14 +1,13 @@
 package tech.biuldrun.spotify.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.math.BigDecimal;
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -20,33 +19,36 @@ public class Reviews {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID reviewsId;
-
-    @ManyToOne//cada review assosciada a uma conta
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "review_id")
+    private UUID reviewId;
 
 
-    @ManyToOne
-    @JoinColumn(name = "albuns_id")
-    private Albuns albuns;
+    @Column(name = "rating", precision = 3, scale = 2, nullable = false)
+    private BigDecimal rating;
 
-    @Column(name = "name")
-    private String name;
-
-    @Column(name = "rating")
-    private String rating;//pesquisar pra decimal(3,2)
-
-
-    @Lob
+    @Column(nullable = false)
     private String comment;
 
-    @CreationTimestamp//indica que o campo é um timestamp
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
     private Instant createdAt;
 
-    @UpdateTimestamp//indica que o campo é um timestamp
+    @UpdateTimestamp
+    @Column(name = "updated_at")
     private Instant updatedAt;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
+    @ManyToOne
+    @JoinColumn(name = "album_id", nullable = false)
+    @JsonBackReference
+    @ToString.Exclude
+    private Albuns albuns;
 
+    @PostLoad
+    private void onLoad() {
+        System.out.println("Review entity loaded: " + this);
+    }
 }

@@ -1,14 +1,17 @@
 package tech.biuldrun.spotify.entity;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference; // Importante para a serialização
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.Reference;
+
 
 import java.time.Instant;
-import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -18,10 +21,9 @@ import java.util.UUID;
 @Table(name = "tb_users")
 public class User {
 
-
-    @Getter
-    @Id//utiliza o campo como identificador(pk)
-    @GeneratedValue(strategy = GenerationType.UUID )// gera o valor automaticamente
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "user_id")
     private UUID userId;
 
     @Column(name = "user_name")
@@ -29,28 +31,29 @@ public class User {
 
     private String email;
 
+    @Column(name = "password")
     private String password;
 
     @Column(name = "profile_picture")
     private String profilePicture;
 
-    @Lob//indica que pode conter um grande volume de texto
+    @Lob
     private String bio;
 
-    @CreationTimestamp//indica que o campo é um timestamp
+    @CreationTimestamp
     private Instant createdAt;
 
-    @UpdateTimestamp//indica que o campo é um timestamp
+    @UpdateTimestamp
     private Instant updatedAt;
 
-    @OneToOne(mappedBy = "user")//um user pode apenas uma conta
-    private Account accounts;
 
-    @OneToMany(mappedBy = "user")
-    private List<Reviews> reviews;
 
-    @OneToMany(mappedBy = "user")
-    private List<Lists> lists;
+    // Relacionamento com a classe Account
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE , orphanRemoval = true)
+    @JsonManagedReference
+    @ToString.Exclude // ⚠️ Isso impede o loop
+    private Account account;
 
 
     public User(UUID userId, String userName, String email, String password, Instant createdAt, Instant updatedAt) {
@@ -61,6 +64,4 @@ public class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
-
 }

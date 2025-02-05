@@ -1,10 +1,16 @@
 package tech.biuldrun.spotify.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import feign.ResponseMapper;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -15,19 +21,37 @@ import java.util.UUID;
 public class Account {
 
     @Id
-    @Column(name = "account_id")
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID acountId;
+    @Column(name = "account_id")
+    private UUID accountId;
 
-    @OneToOne//apenas uma conta pra cada user
-    @JoinColumn(name = "user_id")//indica ao criar tabela que o campo user_id é uma chave estrangeira
-    private User user;
-
-    @Column(name = "description")
-    private String description;
 
     @Column(name = "provider")
     private String provider;
+
+    @Column(name = "providerId")
+    private String providerId;
+
+    @OneToMany(mappedBy = "account")
+    private List<AccountReview> accountReviews;
+
+
+
+    // Relacionamento unidirecional: a conta aponta para o usuário
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    @ToString.Exclude
+//🧐 O que é @ToString.Exclude?
+//    @ToString.Exclude é uma anotação do Lombok que impede que um campo seja incluído automaticamente no método toString() gerado pela anotação @Data ou @ToString.
+    private User user;
+
+
+    // Log message after entity is loaded from the database
+    @PostLoad
+    private void onLoad() {
+        System.out.println("UserSocialAccount entity loaded: " + this);
+    }
 
 
 }
