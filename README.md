@@ -1,4 +1,14 @@
-# Spotify API Integration Project
+# Letterfy Backend
+
+![Image](https://github.com/user-attachments/assets/c0d42353-97fd-49aa-814b-14e7f8d4a47f)
+
+![Image](https://github.com/user-attachments/assets/699877d6-e0b3-435c-a083-5b69ec8e3af3)
+
+![Image](https://github.com/user-attachments/assets/5e4a21bb-d58e-4b4d-81ab-f07e49031cdc)
+
+![Image](https://github.com/user-attachments/assets/b6413692-cc85-46f7-90f8-287aa6c4d357)
+
+This is the backend of the Letterfy application, responsible for managing music albums, reviews, users, and accounts, returning responses in JSON format. The frontend is being developed separately. The backend allows listing albums with their respective reviews, retrieving the list of users and accounts, and enabling the creation, updating, and deletion of these entities. Users can create and manage album reviews, with options to edit or delete existing ones. The system implements full CRUD functionality for users, accounts, and reviews, ensuring flexibility in data management.
 
 ## Overview
 
