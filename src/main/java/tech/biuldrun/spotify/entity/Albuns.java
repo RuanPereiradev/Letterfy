@@ -1,7 +1,6 @@
 package tech.biuldrun.spotify.entity;
 
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,8 +21,9 @@ import java.util.List;
 public class Albuns {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "album_id")
-    private String albumId;
+    private UUID albumId;
 
 
     @Column(name = "spotify_id", nullable = false, unique = true)
@@ -44,13 +45,14 @@ public class Albuns {
     @CreationTimestamp//indica que o campo é um timestamp
     private Instant createdAt;
 
-    public Albuns(String albumId, String spotifyId, String name, String coverImage) {
+    public Albuns(UUID albumId, String spotifyId, String name, String coverImage) {
         this.albumId = albumId;
         this.spotifyId = spotifyId;
         this.name = name;
         this.coverImage = coverImage;
 
     }
+
 
     @PostLoad
     private void onLoad() {

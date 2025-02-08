@@ -10,6 +10,7 @@ import tech.biuldrun.spotify.repository.ReviewRepository;
 
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class AlbumService {
@@ -24,9 +25,15 @@ public class AlbumService {
     }
 
     public void createAlbum(CreateAlbumDto createAlbumDto) {
+        if(albumRepository.existsBySpotifyId(createAlbumDto.spotifyId())) {
+            throw new IllegalArgumentException("Album already exists(SpotifyId)");
+        }
+        if (albumRepository.existsByName(createAlbumDto.name())) {
+            throw new IllegalArgumentException("Album already exists(name)");
+        }
         //dto->entity
         var album = new Albuns(
-                createAlbumDto.albumId(),
+                UUID.randomUUID(),
                 createAlbumDto.name(),
                 createAlbumDto.spotifyId(),
                 createAlbumDto.coverImage()
