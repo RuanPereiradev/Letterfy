@@ -9,6 +9,9 @@
     import java.util.UUID;
 
 
-    public interface AlbumRepository  extends JpaRepository<Albuns, String> {
+    public interface AlbumRepository  extends JpaRepository<Albuns, UUID> {
 
+
+        boolean existsBySpotifyId(String spotifyId);
+        boolean existsByName(String name);
     }

@@ -29,7 +29,7 @@ public class ReviewService {
         Account account = accountRepository.findById(UUID.fromString(createReviewDto.accountId()))
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Account not found"));
 
-        Albuns album = albumRepository.findById(createReviewDto.albumId()) // ✅ Agora albumRepository está disponível
+        Albuns album = albumRepository.findById(UUID.fromString(createReviewDto.albumId())) // ✅ Agora albumRepository está disponível
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Album not found"));
 
         Reviews review = new Reviews();
