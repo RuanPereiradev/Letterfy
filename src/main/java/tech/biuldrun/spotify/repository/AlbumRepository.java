@@ -10,8 +10,10 @@
 
 
     public interface AlbumRepository  extends JpaRepository<Albuns, UUID> {
-
+        Optional<Albuns> findByAlbumId(UUID albumId);
 
         boolean existsBySpotifyId(String spotifyId);
         boolean existsByName(String name);
+
+
     }
