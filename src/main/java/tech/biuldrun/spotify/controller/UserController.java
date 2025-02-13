@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.*;
 import tech.biuldrun.spotify.controller.dto.AccountResponseDto;
 import tech.biuldrun.spotify.controller.dto.CreateAccountDto;
 import tech.biuldrun.spotify.controller.dto.CreateUserDto;
-import tech.biuldrun.spotify.controller.dto.UpdateUserDto;
 import tech.biuldrun.spotify.entity.User;
 import tech.biuldrun.spotify.service.UserService;
 
@@ -46,12 +45,7 @@ public class UserController {
      return ResponseEntity.ok(users);
     }
 
-//    @PutMapping("/{userId}")
-//    public ResponseEntity<Void> updateUserById(@PathVariable("userId") String userId,
-//                                               @RequestBody UpdateUserDto updateUserDto){
-//         userService.updateUserById(userId, updateUserDto);
-//        return ResponseEntity.noContent().build();
-//    }
+
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> deleteById(@PathVariable("userId") String userId){
@@ -70,8 +64,6 @@ public class UserController {
         AccountResponseDto accountResponseDto = userService.getAccountByUserId(userId);
         return ResponseEntity.ok(accountResponseDto);
     }
-
-
 
 
 }

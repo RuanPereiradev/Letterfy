@@ -2,16 +2,11 @@ package tech.biuldrun.spotify.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tech.biuldrun.spotify.controller.dto.AccountResponseDto;
-//import tech.biuldrun.spotify.controller.dto.AlbumResponseDto;
 import tech.biuldrun.spotify.controller.dto.AlbumResponseDto;
 import tech.biuldrun.spotify.controller.dto.CreateAlbumDto;
-import tech.biuldrun.spotify.controller.dto.CreateUserDto;
 import tech.biuldrun.spotify.entity.Albuns;
-import tech.biuldrun.spotify.entity.User;
 import tech.biuldrun.spotify.service.AlbumService;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -40,12 +35,12 @@ public class MyAlbumController {
 
     }
 
+    @GetMapping("/{albumId}")
+        public ResponseEntity<AlbumResponseDto>getAlbunsById(@PathVariable("albumId") String albumId){
+        AlbumResponseDto albumResponseDto = albumService.getAlbumById(albumId);
+        return ResponseEntity.ok(albumResponseDto);
+    }
 
-//    @GetMapping("/{albumId}")
-//    public ResponseEntity<AlbumResponseDto> getAlbumById(@PathVariable("albumId") String albumId) {
-//        AlbumResponseDto albumResponseDto = albumService.getAlbumById(albumId);
-//        return ResponseEntity.ok(albumResponseDto);
-//    }
 
 
 

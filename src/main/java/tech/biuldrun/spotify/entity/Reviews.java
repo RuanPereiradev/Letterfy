@@ -47,6 +47,12 @@ public class Reviews {
     @ToString.Exclude
     private Albuns albuns;
 
+    @ManyToOne
+    @JoinColumn(name = "song_id", nullable = false)
+    @JsonBackReference
+    @ToString.Exclude
+    private Song song;
+
     @PostLoad
     private void onLoad() {
         System.out.println("Review entity loaded: " + this);

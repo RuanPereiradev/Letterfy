@@ -26,13 +26,4 @@ public class ReviewController {
     }
 }
 
-//
-//    @GetMapping("/album/{albumId}")
-//    public ResponseEntity<Void> getReviewsByAlbumId(@PathVariable String albumId) {
-//
-//      var reviews =   reviewService.getReviewsByAlbumId(albumId);
-//
-//        return  ResponseEntity.ok(reviews);
-//
-//    }
-//}
+
