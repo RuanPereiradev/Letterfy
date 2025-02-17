@@ -7,6 +7,7 @@ import tech.biuldrun.spotify.controller.dto.CreateReviewDto;
 import tech.biuldrun.spotify.entity.Account;
 import tech.biuldrun.spotify.entity.Albuns;
 import tech.biuldrun.spotify.entity.Reviews;
+
 import tech.biuldrun.spotify.repository.AccountRepository;
 import tech.biuldrun.spotify.repository.AlbumRepository;
 import tech.biuldrun.spotify.repository.ReviewRepository;
@@ -22,7 +23,7 @@ public class ReviewService {
     public ReviewService(ReviewRepository reviewRepository, AccountRepository accountRepository, AlbumRepository albumRepository) {
         this.reviewRepository = reviewRepository;
         this.accountRepository = accountRepository;
-        this.albumRepository = albumRepository; // ✅ Inicializando o AlbumRepository
+        this.albumRepository = albumRepository;// ✅ Inicializando o AlbumRepository
     }
 
     public void createReview(CreateReviewDto createReviewDto) {
@@ -40,6 +41,7 @@ public class ReviewService {
 
         reviewRepository.save(review);
     }
+
 }
 
 

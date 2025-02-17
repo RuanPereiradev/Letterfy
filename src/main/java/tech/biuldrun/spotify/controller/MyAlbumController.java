@@ -31,8 +31,6 @@ public class MyAlbumController {
     public ResponseEntity<List<Albuns>> listAlbuns(){
         var albuns = albumService.listAlbuns();
         return ResponseEntity.ok(albuns);
-
-
     }
 
     @GetMapping("/{albumId}")
