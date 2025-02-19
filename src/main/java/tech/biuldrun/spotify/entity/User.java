@@ -59,15 +59,10 @@ public class User implements UserDetails {
 
 
 
-    public User(UUID userId, String userName, String email,  String encryptedPassword,String password, Instant createdAt, Instant updatedAt, UserRole role ) {
-        this.userId = userId;
+    public User(UUID uuid, String userName, String email, String password, Instant now, UserRole role ) {
         this.userName = userName;
         this.email = email;
-        this.password = password;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
         this.role = role;
-        this.password = encryptedPassword;
     }
 
 
