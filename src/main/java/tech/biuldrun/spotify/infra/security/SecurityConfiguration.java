@@ -24,18 +24,23 @@ public class SecurityConfiguration {
                 .sessionManagement(sessionManagement
                         -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(
+                        //configuração de autorização para permitir o login e o registro de usuários
                         authorizeRequests -> authorizeRequests
-                .requestMatchers(HttpMethod.POST, "/v1/users").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                )
+                                .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/v1/users").hasRole("ADMIN")
+                                .anyRequest().authenticated()
+                        )
                 .build();
 
     }
+    //configuração de autenticação para permitir a injeção de dependência do AuthenticationManager
     @Bean
     public AuthenticationManager AuthenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
+    //configuração de criptografia de senha
     @Bean
     public BCryptPasswordEncoder passwordEncouder(){ return new BCryptPasswordEncoder(); }
 }
