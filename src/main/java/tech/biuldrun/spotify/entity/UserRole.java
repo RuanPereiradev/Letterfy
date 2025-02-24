@@ -1,5 +1,5 @@
 package tech.biuldrun.spotify.entity;
-
+// Enum class for user roles
 public enum UserRole {
     ADMIN("admin"),
     USER("user");

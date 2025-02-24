@@ -18,8 +18,9 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-@Entity
-@Table(name = "tb_users")
+@Entity(name = "users")
+@Table(name = "tb_user")
+@Getter
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
 
@@ -28,10 +29,11 @@ public class User implements UserDetails {
     @Column(name = "user_id")
     private UUID userId;
 
+
     @Column(name = "user_name")
     private String userName;
 
-    private String email;
+    private String login;
 
     @Column(name = "password")
     private String password;
@@ -50,32 +52,31 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    // Relacionamento com a classe Account
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE , orphanRemoval = true)
-    @JsonManagedReference
-    @ToString.Exclude // ⚠️ Isso impede o loop
-    private Account account;
+    @OneToMany(mappedBy = "user")
+    private List<UserReview> userReviews;
 
 
-
-    public User(UUID uuid, String userName, String email, String password, Instant now, UserRole role ) {
-        this.userName = userName;
-        this.email = email;
+    public User(String login, String password,  UserRole role) {
+        this.login = login;
+        this.password = password;
         this.role = role;
     }
 
 
 
+    // Métodos da interface UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role==UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role==UserRole.ADMIN)
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     public String getUsername() {
-        return email;
+        return login;
     }
 
     @Override
@@ -85,21 +86,17 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
+        return true;
     }
 
-
-    public String getUserName() {
-        return userName;
-    }
 }
