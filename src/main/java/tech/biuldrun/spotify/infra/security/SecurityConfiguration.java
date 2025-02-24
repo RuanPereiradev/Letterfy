@@ -1,5 +1,6 @@
 package tech.biuldrun.spotify.infra.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -9,12 +10,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+
 
     @Bean
     //configuração de segurança para desabilitar o csrf e a criação de sessão
@@ -36,11 +38,11 @@ public class SecurityConfiguration {
     }
     //configuração de autenticação para permitir a injeção de dependência do AuthenticationManager
     @Bean
-    public AuthenticationManager AuthenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     //configuração de criptografia de senha
     @Bean
-    public BCryptPasswordEncoder passwordEncouder(){ return new BCryptPasswordEncoder(); }
+    public PasswordEncoder passwordEncouder(){ return new BCryptPasswordEncoder(); }
 }

@@ -13,9 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @Data
 @Embeddable
-public class AccountReviewId implements Serializable {
-    @Column(name = "account_id")
-    private UUID accountId;
+public class UserReviewId implements Serializable {
+    @Column(name = "user_id")
+    private UUID userId;
 
     @Column(name = "review_id")
     private String reviewId;

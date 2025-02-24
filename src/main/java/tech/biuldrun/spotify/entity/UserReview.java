@@ -3,16 +3,16 @@ package tech.biuldrun.spotify.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "tb_account_review")
-public class AccountReview {
+@Table(name = "tb_user_review")
+public class UserReview {
 
     @EmbeddedId
-    private AccountReviewId id;
+    private UserReviewId id;
 
     @ManyToOne
     @MapsId("accountId")
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @ManyToOne
     @MapsId

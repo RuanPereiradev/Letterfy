@@ -1,33 +1,60 @@
 package tech.biuldrun.spotify.controller;
 
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import tech.biuldrun.spotify.controller.dto.AccountResponseDto;
-import tech.biuldrun.spotify.controller.dto.CreateAccountDto;
-import tech.biuldrun.spotify.controller.dto.CreateUserDto;
+import tech.biuldrun.spotify.controller.dto.AuthenticationDto;
+import tech.biuldrun.spotify.controller.dto.RegisterDto;
 import tech.biuldrun.spotify.entity.User;
+import tech.biuldrun.spotify.repository.UserRepository;
 import tech.biuldrun.spotify.service.UserService;
 
-import java.net.URI;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/users")
+@RequestMapping("/auth")
 public class UserController {
 
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
     private UserService userService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     public UserController(UserService userService) {
         this.userService = userService;
     }//injeção de dependencia
 
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserDto createUserDto) {
-        var userId = userService.createUser(createUserDto);
-        return ResponseEntity.created(URI.create("/v1/users/" + userId.toString())).build();
+    @PostMapping("/login")
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDto data){
+
+        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+
+        System.out.println("successful login: " + data.login());
+
+        return ResponseEntity.ok().build();
+
 
     }
 
+
+    @PostMapping("/register")
+    public ResponseEntity register(@RequestBody @Valid RegisterDto data) {
+        if (this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+        //pegando o rash da senha do usuário
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        User newUser = new User(data.login(), encryptedPassword, data.role());
+        this.userRepository.save(newUser);
+        return ResponseEntity.ok().build();
+    }
 
     @GetMapping("/{userId}")
     public ResponseEntity<User> getUserById(@PathVariable("userId") String userId) {
@@ -53,17 +80,6 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{userId}/accounts")
-    public ResponseEntity<Void> createAccount(@PathVariable("userId") String userId,
-                                              @RequestBody CreateAccountDto createAccountDto){
-        userService.createAccount(userId, createAccountDto);
-        return ResponseEntity.ok().build();
-    }
-    @GetMapping("/{userId}/accounts")
-    public ResponseEntity<AccountResponseDto> getAccountByUserId(@PathVariable("userId") String userId) {
-        AccountResponseDto accountResponseDto = userService.getAccountByUserId(userId);
-        return ResponseEntity.ok(accountResponseDto);
-    }
 
 
 }

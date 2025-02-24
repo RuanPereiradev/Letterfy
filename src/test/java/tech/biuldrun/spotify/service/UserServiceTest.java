@@ -52,16 +52,15 @@ class UserServiceTest {
             var user = new User(
                 UUID.randomUUID(),
                 "username",
-                "email",
-                "password",
-                Instant.now(),
+                "login",
+                    Instant.now(),
                 null
             );
 
             doReturn( user).when(userRepository).save(userArgumentCaptor.capture());
             var input = new CreateUserDto(
                     "username",
-                    "email@email.com",
+                    "login@login.com",
                     "123"
             );
             //act
@@ -70,7 +69,7 @@ class UserServiceTest {
             assertNotNull(output);
             var userCaptured = userArgumentCaptor.getValue();
             assertEquals(input.username(), userCaptured.getUserName());
-            assertEquals(input.email(), userCaptured.getEmail());
+            assertEquals(input.email(), userCaptured.getLogin());
             assertEquals(input.password(), userCaptured.getPassword());
 
         }
@@ -84,7 +83,7 @@ class UserServiceTest {
             doThrow( new RuntimeException()).when(userRepository).save(any());
             var input = new CreateUserDto(
                     "username",
-                    "email",
+                    "login",
                     "123"
             );
             //act & assert
@@ -102,8 +101,7 @@ class UserServiceTest {
             var user = new User(
                     UUID.randomUUID(),
                     "username",
-                    "email@email.com",
-                    "password",
+                    "login@login.com",
                     Instant.now(),
                     null
             );
@@ -148,8 +146,7 @@ class UserServiceTest {
             var user = new User(
                     UUID.randomUUID(),
                     "username",
-                    "email",
-                    "password",
+                    "login",
                     Instant.now(),
                     null
             );
@@ -230,8 +227,7 @@ class UserServiceTest {
             var user = new User(
                     UUID.randomUUID(),
                     "username",
-                    "email@email.com",
-                    "password",
+                    "login@login.com",
                     Instant.now(),
                     null
             );
