@@ -1,5 +1,6 @@
 package tech.biuldrun.spotify.infra.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
+
+
 
     @Bean
     //configuração de segurança para desabilitar o csrf e a criação de sessão
