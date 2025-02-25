@@ -8,8 +8,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import tech.biuldrun.spotify.controller.dto.AuthenticationDto;
+import tech.biuldrun.spotify.controller.dto.LoginResponseDto;
 import tech.biuldrun.spotify.controller.dto.RegisterDto;
 import tech.biuldrun.spotify.entity.User;
+import tech.biuldrun.spotify.infra.security.TokenService;
 import tech.biuldrun.spotify.repository.UserRepository;
 import tech.biuldrun.spotify.service.UserService;
 
@@ -25,8 +27,14 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private TokenService tokenService;
+
+
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -38,9 +46,11 @@ public class UserController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+
         System.out.println("successful login: " + data.login());
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new LoginResponseDto(token));
 
 
     }

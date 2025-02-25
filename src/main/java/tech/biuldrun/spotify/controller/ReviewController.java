@@ -1,6 +1,7 @@
 package tech.biuldrun.spotify.controller;
 
 import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -8,8 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import tech.biuldrun.spotify.controller.dto.CreateReviewDto;
 import tech.biuldrun.spotify.service.ReviewService;
 @AllArgsConstructor
-@RestController
-@RequestMapping("/v1/review")
+@RestController()
+@RequestMapping("/review")
 public class ReviewController {
 
     private ReviewService reviewService;
@@ -20,7 +21,7 @@ public class ReviewController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIM')")
+//    @PreAuthorize("hasRole('ADMIM')")
     public ResponseEntity<Void> createReview(@RequestBody CreateReviewDto createReviewDto) {
         System.out.println("Recebida requisição para criar review: " + createReviewDto);
         reviewService.createReview(createReviewDto);

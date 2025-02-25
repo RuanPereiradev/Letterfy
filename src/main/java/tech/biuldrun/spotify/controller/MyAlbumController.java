@@ -1,10 +1,12 @@
 package tech.biuldrun.spotify.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tech.biuldrun.spotify.controller.dto.AlbumResponseDto;
 import tech.biuldrun.spotify.controller.dto.CreateAlbumDto;
 import tech.biuldrun.spotify.entity.Albuns;
+import tech.biuldrun.spotify.repository.AlbumRepository;
 import tech.biuldrun.spotify.service.AlbumService;
 
 import java.util.List;
@@ -12,6 +14,9 @@ import java.util.List;
 @RestController
 @RequestMapping("v1/album")
 public class MyAlbumController {
+
+    @Autowired
+    AlbumRepository  albumRepository;
 
     private AlbumService albumService;
 
@@ -24,7 +29,6 @@ public class MyAlbumController {
     public ResponseEntity<Void> createAlbum(@RequestBody CreateAlbumDto createAlbumDto) {
         albumService.createAlbum(createAlbumDto);
         return ResponseEntity.ok().build();
-
     }
 
     @GetMapping
