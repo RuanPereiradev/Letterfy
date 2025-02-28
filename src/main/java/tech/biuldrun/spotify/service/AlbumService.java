@@ -19,9 +19,11 @@ public class AlbumService {
 
     private  AlbumRepository albumRepository;
 
-    public AlbumService(AlbumRepository albumRepository, ReviewRepository reviewRepository) {this.albumRepository = albumRepository;
+    public AlbumService(AlbumRepository albumRepository) {
              this.albumRepository = albumRepository;
     }
+
+
 
     public void createAlbum(CreateAlbumDto createAlbumDto) {
         if(albumRepository.existsBySpotifyId(createAlbumDto.spotifyId())) {
@@ -32,11 +34,11 @@ public class AlbumService {
         }
         //dto->entity
         var album = new Albuns(
-                UUID.randomUUID(),
                 createAlbumDto.name(),
                 createAlbumDto.spotifyId(),
                 createAlbumDto.coverImage()
-        );
+                );
+
         albumRepository.save(album);
 
     }

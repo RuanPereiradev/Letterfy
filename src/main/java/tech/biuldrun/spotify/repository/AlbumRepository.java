@@ -5,6 +5,7 @@
     import org.springframework.data.repository.query.Param;
     import tech.biuldrun.spotify.entity.Albuns;
 
+    import java.util.List;
     import java.util.Optional;
     import java.util.UUID;
 
@@ -14,6 +15,9 @@
 
         boolean existsBySpotifyId(String spotifyId);
         boolean existsByName(String name);
+
+        @Query("SELECT a.spotifyId FROM Albuns a WHERE a.spotifyId IN :spotifyIds")
+        List<String> findExistingSpotifyIds(@Param("spotifyIds") List<String> spotifyIds);
 
 
     }

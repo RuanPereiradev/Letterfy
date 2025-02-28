@@ -45,8 +45,7 @@ public class Albuns {
     @CreationTimestamp//indica que o campo é um timestamp
     private Instant createdAt;
 
-    public Albuns(UUID albumId, String spotifyId, String name, String coverImage) {
-        this.albumId = albumId;
+    public Albuns(String spotifyId, String name, String coverImage) {
         this.spotifyId = spotifyId;
         this.name = name;
         this.coverImage = coverImage;

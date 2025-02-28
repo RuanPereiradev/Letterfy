@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import tech.biuldrun.spotify.client.AlbumNewReleases;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -41,6 +42,8 @@ public class Reviews {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    
+
 
     @ManyToOne
     @JoinColumn(name = "album_id", nullable = false)

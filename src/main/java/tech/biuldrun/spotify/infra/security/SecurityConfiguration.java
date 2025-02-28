@@ -34,6 +34,7 @@ public class SecurityConfiguration {
                         authorizeRequests -> authorizeRequests
                                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/spotify/api/albumsReleases").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/v1/album").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/v1/reviews").hasRole("ADMIN")
                                 .anyRequest().authenticated()
