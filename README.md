@@ -1,12 +1,23 @@
+
 # Letterfy Backend
+
+This is the backend of the Letterfy application, responsible for managing music albums, reviews, users, and accounts, returning responses in JSON format. The frontend is being developed separately. The backend allows listing albums with their respective reviews, retrieving the list of users and accounts, and enabling the creation, updating, and deletion of these entities. Users can create and manage album reviews, with options to edit or delete existing ones. The system implements full CRUD functionality for users, accounts, and reviews, ensuring flexibility in data management.
 
 ![Image](https://github.com/user-attachments/assets/c0d42353-97fd-49aa-814b-14e7f8d4a47f)
 
 ![Image](https://github.com/user-attachments/assets/699877d6-e0b3-435c-a083-5b69ec8e3af3)
 
+<<<<<<< HEAD
 ![Image](https://github.com/user-attachments/assets/5e4a21bb-d58e-4b4d-81ab-f07e49031cdc)
 
 This is the backend of the Letterfy application, responsible for managing music albums, reviews, users, and accounts, returning responses in JSON format. The frontend is being developed separately. The backend allows listing albums with their respective reviews, retrieving the list of users and accounts, and enabling the creation, updating, and deletion of these entities. Users can create and manage album reviews, with options to edit or delete existing ones. The system implements full CRUD functionality for users, accounts, and reviews, ensuring flexibility in data management.
+=======
+<div style="display: flex; justify-content: space-between;">
+  <img src="https://github.com/user-attachments/assets/891f4a87-bca5-486e-8f42-bfcd2672b487" alt="Database Schema" style="width: 40%;">
+  <img src="https://github.com/user-attachments/assets/8bf98221-b712-49f4-8590-3b388a0bdf10" alt="Album Information" style="width: 46%;">
+</div>
+
+>>>>>>> caeb91125be0bf0b70c392d41813054aba101f5b
 
 ## Overview
 
@@ -19,6 +30,7 @@ This project is a RESTful API developed in Java using Spring Boot. It integrates
 - **User Authentication**: Implements JWT authentication and password encryption using Spring Security.
 - **API Structure**: Well-defined endpoints to fetch and return music-related data.
 - **Secure Access**: Uses role-based access control (RBAC) to restrict API access.
+- **Automated registration**: captures new API releases daily.  
 
 ## Technologies Used
 
@@ -119,6 +131,10 @@ This project is a RESTful API developed in Java using Spring Boot. It integrates
 
 ## API Endpoints
 
+![Screenshot from 2025-02-28 14-06-30](https://github.com/user-attachments/assets/6201cc4b-1586-4e35-bad6-e353925de829)
+
+
+
 ### Authentication
 
 - **Register a User**
@@ -179,6 +195,88 @@ This project is a RESTful API developed in Java using Spring Boot. It integrates
     }
   ]
   ```
+
+### Automated Registration
+
+I implemented an automated function that **daily fetches information about newly released albums** from the Spotify API and registers them in the database. This ensures the system is always up-to-date with the latest releases without manual intervention.
+
+#### How It Works:
+ **Spotify API Integration:**
+   - Uses Spotify's **Client Credentials Flow** to obtain an access token.
+   - Fetches new releases from the `/v1/browse/new-releases` endpoint.
+
+ **Data Processing:**
+   - Processes the API response and maps it to the application's domain model (e.g., `Album` entity).
+   - Extracts fields like album name, artists, release date, and cover art.
+
+ **Automatic Database Registration:**
+   - Saves the processed albums to the database.
+   - Checks for duplicates to avoid redundant entries.
+
+ **Daily Scheduling:**
+   - Uses **Spring Scheduler** to run this function daily at a specific time (e.g., midnight).
+
+#### Benefits:
+- **Continuous Updates:** The system always has the latest releases.
+- **Reduced Manual Effort:** Eliminates the need for manual album registration.
+- **Data Consistency:** Ensures data is always in sync with the Spotify API.
+
+```bash
+
+
+@Service
+@RequiredArgsConstructor
+public class SpotifyService {
+
+    private final AuthSpotifyClient authSpotifyClient;
+    private final AlbumNewRealeasesSpotifyClient albumNewRealeasesSpotifyClient;
+    private final AlbumRepository albumRepository;
+
+    //fetching new releases from spotify
+    @Scheduled(fixedRate = 86400000)
+    public void fetchAndSaveNewReleases() {
+        var request = new LoginRequest(
+                "client_credentials",
+                "********************************",
+                "********************************"
+        );
+        var token = authSpotifyClient.login(request).getAccessToken();
+
+        //getting all new releases
+        List<AlbumNewReleases> releases = albumNewRealeasesSpotifyClient
+                .getReleases("Bearer " + token)
+                .getAlbums()
+                .getItems();
+
+        //getting all spotify ids
+        List<String> newSpotifyIds = releases.stream()
+                .map(AlbumNewReleases::getSpotifyId)
+                .collect(Collectors.toList());
+
+        //getting all existing spotify ids
+        List<String> existingSpotifyIds = albumRepository.findExistingSpotifyIds(newSpotifyIds);
+
+        //filtering only new releases
+        //verification if the album already exists
+        List<Albuns> newAlbuns = releases.stream()
+                .filter(album -> !existingSpotifyIds.contains(album.getSpotifyId()))
+                .map(album -> new Albuns(
+                        album.getSpotifyId(),
+                        album.getName(),
+                        album.getArtists().getFirst().getName()
+
+                ))
+                .collect(Collectors.toList());
+
+    //saved only album that does not exist
+       if(!newAlbuns.isEmpty()){
+           albumRepository.saveAll(newAlbuns);
+           
+       }
+    }
+}
+
+```
 
 ## Project Structure
 
