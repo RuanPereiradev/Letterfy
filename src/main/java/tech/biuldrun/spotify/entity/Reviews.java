@@ -24,6 +24,9 @@ public class Reviews {
     @Column(name = "review_id")
     private UUID reviewId;
 
+    @Column(unique = true)
+    private String login;
+
 
     @Column(name = "rating", precision = 3, scale = 2, nullable = false)
     private BigDecimal rating;
@@ -42,7 +45,6 @@ public class Reviews {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-    
 
 
     @ManyToOne

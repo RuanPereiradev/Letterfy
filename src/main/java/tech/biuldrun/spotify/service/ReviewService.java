@@ -1,6 +1,9 @@
 package tech.biuldrun.spotify.service;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import tech.biuldrun.spotify.controller.dto.CreateReviewDto;
@@ -11,9 +14,13 @@ import tech.biuldrun.spotify.repository.AlbumRepository;
 import tech.biuldrun.spotify.repository.ReviewRepository;
 import tech.biuldrun.spotify.repository.UserRepository;
 
+import java.util.List;
 import java.util.UUID;
 @Service
 public class ReviewService {
+
+    private AuthenticationManager authenticationManager;
+
 
     private  ReviewRepository reviewRepository;
     private UserRepository userRepository;
@@ -26,7 +33,8 @@ public class ReviewService {
     }
 
     public void createReview(CreateReviewDto createReviewDto) {
-        User user = userRepository.findById(UUID.fromString(createReviewDto.userId()))
+        var authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userRepository.login(authenticatedUser.getLogin())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "user not found"));
 
         Albuns album = albumRepository.findById(UUID.fromString(createReviewDto.albumId())) // ✅ Agora albumRepository está disponível
@@ -40,6 +48,8 @@ public class ReviewService {
 
         reviewRepository.save(review);
     }
+
+
 
 }
 

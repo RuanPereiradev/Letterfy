@@ -37,6 +37,7 @@ public class SecurityConfiguration {
                                 .requestMatchers(HttpMethod.GET, "/spotify/api/albumsReleases").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/v1/album").hasRole("ADMIN")
                                 .requestMatchers(HttpMethod.POST, "/v1/reviews").hasRole("ADMIN")
+                                .requestMatchers(HttpMethod.GET, "/auth/users").permitAll()//desabulity filter before test
                                 .anyRequest().authenticated()
                         )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

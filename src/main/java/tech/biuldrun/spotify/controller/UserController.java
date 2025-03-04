@@ -55,6 +55,13 @@ public class UserController {
 
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> listUsers(){
+        var users =  userService.listUsers();
+        return ResponseEntity.ok(users);
+    }
+
+
 
     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDto data) {
@@ -76,11 +83,6 @@ public class UserController {
         }
     }
 
-    @GetMapping
-    public ResponseEntity<List<User>> listUsers(){
-     var users =  userService.listUsers();
-     return ResponseEntity.ok(users);
-    }
 
 
 

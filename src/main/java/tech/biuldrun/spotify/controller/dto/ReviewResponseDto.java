@@ -1,6 +1,6 @@
 package tech.biuldrun.spotify.controller.dto;
 
-public record ReviewResponseDto(String reviewId, String userId, String username, String comment, String albumId, String rating) {
+public record ReviewResponseDto(String reviewId,String albumId, String login,String rating, String comment  ) {
 
     //criando os campos que vou retornar na resposta
 }
