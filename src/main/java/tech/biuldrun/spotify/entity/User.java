@@ -1,6 +1,5 @@
 package tech.biuldrun.spotify.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference; // Importante para a serialização
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -57,7 +56,7 @@ public class User implements UserDetails {
     private List<UserReview> userReviews;
 
 
-    public User(String login, String password,  UserRole role) {
+    public User(UUID uuid, String login, String password, Instant now, UserRole role) {
         this.login = login;
         this.password = password;
         this.role = role;

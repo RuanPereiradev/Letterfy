@@ -8,6 +8,7 @@ import tech.biuldrun.spotify.controller.dto.CreateAlbumDto;
 import tech.biuldrun.spotify.entity.Albuns;
 import tech.biuldrun.spotify.repository.AlbumRepository;
 import tech.biuldrun.spotify.service.AlbumService;
+import tech.biuldrun.spotify.service.UserService;
 
 import java.util.List;
 
@@ -19,6 +20,8 @@ public class MyAlbumController {
     AlbumRepository  albumRepository;
 
     private AlbumService albumService;
+    @Autowired
+    private UserService userService;
 
     public MyAlbumController(AlbumService albumService) {
         this.albumService = albumService;
@@ -46,8 +49,9 @@ public class MyAlbumController {
         return ResponseEntity.ok(albumResponseDto);
     }
 
-
-
-
-
+    @DeleteMapping("/{albumId}")
+    public ResponseEntity<Void> deleteById(@PathVariable("albumId") String albumId){
+        albumService.deleteById(albumId);
+        return ResponseEntity.noContent().build();
+    }
 }

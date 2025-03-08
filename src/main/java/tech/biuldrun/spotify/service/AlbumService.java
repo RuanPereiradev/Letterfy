@@ -1,7 +1,9 @@
 package tech.biuldrun.spotify.service;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 //import tech.biuldrun.spotify.controller.dto.AlbumResponseDto;
+import org.springframework.web.server.ResponseStatusException;
 import tech.biuldrun.spotify.controller.dto.AlbumResponseDto;
 import tech.biuldrun.spotify.controller.dto.CreateAlbumDto;
 import tech.biuldrun.spotify.entity.Albuns;
@@ -17,16 +19,16 @@ import java.util.UUID;
 public class AlbumService {
 
 
-    private  AlbumRepository albumRepository;
+    private AlbumRepository albumRepository;
 
     public AlbumService(AlbumRepository albumRepository) {
-             this.albumRepository = albumRepository;
+        this.albumRepository = albumRepository;
     }
 
 
-
     public void createAlbum(CreateAlbumDto createAlbumDto) {
-        if(albumRepository.existsBySpotifyId(createAlbumDto.spotifyId())) {
+
+        if (albumRepository.existsBySpotifyId(createAlbumDto.spotifyId())) {
             throw new IllegalArgumentException("Album already exists(SpotifyId)");
         }
         if (albumRepository.existsByName(createAlbumDto.name())) {
@@ -37,7 +39,7 @@ public class AlbumService {
                 createAlbumDto.name(),
                 createAlbumDto.spotifyId(),
                 createAlbumDto.coverImage()
-                );
+        );
 
         albumRepository.save(album);
 
@@ -48,10 +50,9 @@ public class AlbumService {
     }
 
 
-
-    public AlbumResponseDto getAlbumById(String albumId){
+    public AlbumResponseDto getAlbumById(String albumId) {
         Albuns albuns = albumRepository.findByAlbumId(UUID.fromString(albumId))
-                .orElseThrow(()-> new RuntimeException("Album not found"));
+                .orElseThrow(() -> new RuntimeException("Album not found"));
 
         return new AlbumResponseDto(
                 albuns.getAlbumId().toString(),
@@ -61,4 +62,16 @@ public class AlbumService {
                 albuns.getReviews()
         );
     }
+
+    //necessita de revisão
+    public void deleteById(String albumId) {
+
+    var id = UUID.fromString(albumId);
+    var albumExists = albumRepository.existsByAlbumId(id);
+    if(albumExists){
+        albumRepository.deleteById(id);
+    }
+
+    }
+
 }

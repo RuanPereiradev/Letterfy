@@ -2,11 +2,10 @@ package tech.biuldrun.spotify.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
@@ -16,10 +15,12 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 @Entity
 @Table(name = "tb_albuns")
 public class Albuns {
 
+    @Setter
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "album_id")
@@ -37,7 +38,7 @@ public class Albuns {
 
 
 
-    @OneToMany(mappedBy = "albuns", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "albuns", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
     @ToString.Exclude//se tirar da merda
     private List<Reviews> reviews;
