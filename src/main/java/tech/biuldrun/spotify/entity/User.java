@@ -8,7 +8,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
@@ -19,15 +18,13 @@ import java.util.UUID;
 @Data
 @Entity(name = "users")
 @Table(name = "tb_user")
-@Getter
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "userId")
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id")
     private UUID userId;
-
 
     @Column(name = "user_name")
     private String userName;
@@ -51,26 +48,25 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private Instant updatedAt;
 
-
     @OneToMany(mappedBy = "user")
     private List<UserReview> userReviews;
 
-
+    // Construtor sem perfil de admin ou user (deixando para a lógica de role)
     public User(UUID uuid, String login, String password, Instant now, UserRole role) {
         this.login = login;
         this.password = password;
         this.role = role;
     }
 
-
-
     // Métodos da interface UserDetails
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.role==UserRole.ADMIN)
-            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-        else
-            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        if (this.role == UserRole.ADMIN) {
+            return List.of(
+                    new SimpleGrantedAuthority("ROLE_ADMIN"),
+                    new SimpleGrantedAuthority("ROLE_USER"));
+        }
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
@@ -97,5 +93,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
 }

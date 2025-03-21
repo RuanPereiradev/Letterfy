@@ -10,7 +10,7 @@ public class UserReview {
     private UserReviewId id;
 
     @ManyToOne
-    @MapsId("accountId")
+    @MapsId
     @JoinColumn(name = "user_id")
     private User user;
 

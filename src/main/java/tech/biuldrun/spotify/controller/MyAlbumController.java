@@ -28,9 +28,6 @@ public class MyAlbumController {
     }
 
 
-
-
-
     @PostMapping
     public ResponseEntity<Void> createAlbum(@RequestBody CreateAlbumDto createAlbumDto) {
         albumService.createAlbum(createAlbumDto);

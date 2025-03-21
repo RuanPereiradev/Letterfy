@@ -18,5 +18,5 @@ public class UserReviewId implements Serializable {
     private UUID userId;
 
     @Column(name = "review_id")
-    private String reviewId;
+    private String reviewId; // Alterado para UUID
 }
