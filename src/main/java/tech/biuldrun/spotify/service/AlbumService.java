@@ -14,6 +14,7 @@ import tech.biuldrun.spotify.repository.ReviewRepository;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AlbumService {
@@ -34,11 +35,14 @@ public class AlbumService {
         if (albumRepository.existsByName(createAlbumDto.name())) {
             throw new IllegalArgumentException("Album already exists(name)");
         }
+
+
         //dto->entity
         var album = new Albuns(
                 createAlbumDto.name(),
                 createAlbumDto.spotifyId(),
-                createAlbumDto.coverImage()
+                createAlbumDto.artists(),
+                createAlbumDto.images()
         );
 
         albumRepository.save(album);
@@ -58,11 +62,21 @@ public class AlbumService {
                 albuns.getAlbumId().toString(),
                 albuns.getSpotifyId(),
                 albuns.getName(),
-                albuns.getCoverImage(),
+                albuns.getImages(),
                 albuns.getReviews()
         );
     }
 
+    public List<AlbumResponseDto> getAlbunsByName(String name){
+       List<Albuns> albuns = albumRepository.findByNameContainingIgnoreCase(name);
+       if(albuns.isEmpty()){
+           throw new RuntimeException("No albuns found with name similar to: "+ name);
+       }
+        return albuns.stream()
+                .map(AlbumResponseDto::new)
+                .collect(Collectors.toList());
+
+    }
     //necessita de revisão
     public void deleteById(String albumId) {
 

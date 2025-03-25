@@ -14,6 +14,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -25,36 +27,26 @@ public class SecurityConfiguration {
     //configuração de segurança para desabilitar o csrf e a criação de sessão
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors(withDefaults()) // Habilita o CORS
                 .csrf(csrf -> csrf.disable()) // Desabilita o CSRF, apropriado para APIs RESTful
                 .sessionManagement(
-                        sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Define
-                                                                                                                       // que
-                                                                                                                       // não
-                                                                                                                       // será
-                                                                                                                       // usado
-                                                                                                                       // estado
-                                                                                                                       // de
-                                                                                                                       // sessão
+                        sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Permite o refresh
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll() // Permite o login
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() // Permite o registro
-                        .requestMatchers(HttpMethod.GET, "/spotify/api/albumsReleases").permitAll() // Permite acesso
-                                                                                                    // público aos
-                                                                                                    // lançamentos de
-                                                                                                    // álbuns
-                        .requestMatchers(HttpMethod.POST, "/v1/album").hasRole("ADMIN") // Requer autorização de ADMIN
-                                                                                        // para criação de álbum
-                        .requestMatchers(HttpMethod.POST, "/v1/reviews").hasRole("USER") // Requer autorização de USER
-                                                                                         // para criar reviews
-                        .requestMatchers(HttpMethod.GET, "/auth/users").hasRole("ADMIN") // Acesso somente ADMIN para
-                                                                                         // usuários
-                        .requestMatchers(HttpMethod.DELETE, "/v1/album/{albumId}").hasRole("ADMIN") // Permite apenas ao
-                                                                                                    // ADMIN excluir
-                                                                                                    // álbuns
+                        .requestMatchers(HttpMethod.GET, "/spotify/api/albumsReleases").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/album").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/v1/album/search").permitAll()
+
+                        .requestMatchers(HttpMethod.GET, "/v1/album/{albumId}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/v1/album").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/v1/reviews").hasRole("USER")
+                        .requestMatchers(HttpMethod.GET, "/auth/users").permitAll()
+                        .requestMatchers(HttpMethod.DELETE, "/v1/album/{albumId}").hasRole("ADMIN")
                         .anyRequest().authenticated() // Requer autenticação para outras requisições
                 )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class) // Adiciona o filtro
-                                                                                             // customizado de segurança
+                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
 
     }

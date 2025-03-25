@@ -1,6 +1,5 @@
 package tech.biuldrun.spotify.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -22,41 +21,48 @@ public class Albuns {
 
     @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.UUID) // Gerando UUID como chave primária
     @Column(name = "album_id")
     private UUID albumId;
 
-
     @Column(name = "spotify_id", nullable = false, unique = true)
-    private String spotifyId; // ID fornecido pela API do Spotify/ ID externo fornecido pela API do Spotify
+    private String spotifyId; // ID fornecido pela API do Spotify
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "cover_image")
-    private String coverImage;
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "artists_name", joinColumns = @JoinColumn(name = "album_id"))
+    @Column(name = "artists")
+    private List<String> artists;
 
-
+    // Armazenando os links das imagens em uma coleção separada
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "album_images", joinColumns = @JoinColumn(name = "album_id"))
+    @Column(name = "image_url")
+    private List<String> images;
 
     @OneToMany(mappedBy = "albuns", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonManagedReference
-    @ToString.Exclude//se tirar da merda
+    @ToString.Exclude // Evita a impressão de reviews ao chamar toString()
     private List<Reviews> reviews;
 
-    @CreationTimestamp//indica que o campo é um timestamp
+    @CreationTimestamp // Indica que o campo será preenchido automaticamente com o timestamp da criação
     private Instant createdAt;
 
-    public Albuns(String spotifyId, String name, String coverImage) {
+    // Construtor para a criação de novos álbuns com as imagens
+    public Albuns(String spotifyId, String name, List<String> images, List<String> artists) {
         this.spotifyId = spotifyId;
         this.name = name;
-        this.coverImage = coverImage;
-
+        this.images = images;
+        this.artists = artists;
     }
 
+   
 
+    // Método que será executado quando a entidade for carregada
     @PostLoad
     private void onLoad() {
         System.out.println("Album entity loaded: " + this);
     }
-
 }

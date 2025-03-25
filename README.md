@@ -7,17 +7,14 @@ This is the backend of the Letterfy application, responsible for managing music 
 
 ![Image](https://github.com/user-attachments/assets/699877d6-e0b3-435c-a083-5b69ec8e3af3)
 
-<<<<<<< HEAD
 ![Image](https://github.com/user-attachments/assets/5e4a21bb-d58e-4b4d-81ab-f07e49031cdc)
 
 This is the backend of the Letterfy application, responsible for managing music albums, reviews, users, and accounts, returning responses in JSON format. The frontend is being developed separately. The backend allows listing albums with their respective reviews, retrieving the list of users and accounts, and enabling the creation, updating, and deletion of these entities. Users can create and manage album reviews, with options to edit or delete existing ones. The system implements full CRUD functionality for users, accounts, and reviews, ensuring flexibility in data management.
-=======
+
 <div style="display: flex; justify-content: space-between;">
   <img src="https://github.com/user-attachments/assets/891f4a87-bca5-486e-8f42-bfcd2672b487" alt="Database Schema" style="width: 40%;">
   <img src="https://github.com/user-attachments/assets/8bf98221-b712-49f4-8590-3b388a0bdf10" alt="Album Information" style="width: 46%;">
 </div>
-
->>>>>>> caeb91125be0bf0b70c392d41813054aba101f5b
 
 ## Overview
 

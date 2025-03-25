@@ -23,4 +23,7 @@
         List<String> findExistingSpotifyIds(@Param("spotifyIds") List<String> spotifyIds);
 
 
+        Albuns findByName(String name);
+
+        List<Albuns>findByNameContainingIgnoreCase(String name);
     }

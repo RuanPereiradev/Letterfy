@@ -51,4 +51,10 @@ public class MyAlbumController {
         albumService.deleteById(albumId);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/search")
+    public List<AlbumResponseDto>getAlbunsByName(@RequestParam String name){
+        return albumService.getAlbunsByName(name);
+
+    }
+
 }
