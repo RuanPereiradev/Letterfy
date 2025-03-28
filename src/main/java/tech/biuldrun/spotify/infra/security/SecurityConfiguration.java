@@ -40,8 +40,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/v1/album/search").permitAll()
 
                         .requestMatchers(HttpMethod.GET, "/v1/album/{albumId}").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/v1/album").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/v1/reviews").hasRole("USER")
+                        .requestMatchers(HttpMethod.POST, "/v1/album").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/review").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/users").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/v1/album/{albumId}").hasRole("ADMIN")
                         .anyRequest().authenticated() // Requer autenticação para outras requisições

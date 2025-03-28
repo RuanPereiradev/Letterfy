@@ -39,8 +39,8 @@ public class AlbumService {
 
         //dto->entity
         var album = new Albuns(
-                createAlbumDto.name(),
                 createAlbumDto.spotifyId(),
+                createAlbumDto.name(),
                 createAlbumDto.artists(),
                 createAlbumDto.images()
         );

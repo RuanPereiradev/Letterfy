@@ -26,8 +26,6 @@ public class ReviewController {
     @PostMapping
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Void> createReview(@AuthenticationPrincipal UserDetails user, @RequestBody CreateReviewDto createReviewDto) {
-//        System.out.println("Usuário autenticado: " + user.getAuthorities());
-//        System.out.println("Recebida requisição para criar review: " + createReviewDto);
         reviewService.createReview(createReviewDto);
         return ResponseEntity.ok().build();
     }

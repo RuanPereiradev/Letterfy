@@ -53,7 +53,7 @@ public class MyAlbumController {
     }
     @GetMapping("/search")
     public List<AlbumResponseDto>getAlbunsByName(@RequestParam String name){
-        return albumService.getAlbunsByName(name);
+        return albumService.getAlbunsByName(name);  
 
     }
 
