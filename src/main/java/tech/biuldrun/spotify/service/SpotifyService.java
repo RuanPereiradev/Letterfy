@@ -6,10 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
-import tech.biuldrun.spotify.client.AlbumNewRealeasesSpotifyClient;
-import tech.biuldrun.spotify.client.AlbumNewReleases;
-import tech.biuldrun.spotify.client.AuthSpotifyClient;
-import tech.biuldrun.spotify.client.LoginRequest;
+import tech.biuldrun.spotify.client.*;
 import tech.biuldrun.spotify.entity.Albuns;
 import tech.biuldrun.spotify.repository.AlbumRepository;
 
@@ -23,6 +20,7 @@ public class SpotifyService {
     private final AuthSpotifyClient authSpotifyClient;
     private final AlbumNewRealeasesSpotifyClient albumNewRealeasesSpotifyClient;
     private final AlbumRepository albumRepository;
+//    private final SearchSpotifyClient searchSpotifyClient;
 
     // Fetching new releases from Spotify
     @Scheduled(fixedRate = 86400000)
@@ -78,4 +76,20 @@ public class SpotifyService {
             System.out.println("Nenhum novo álbum encontrado.");
         }
     }
+
+    // aqui é a configuração de busca no spotify
+//    public void searchAlbumRequets() {
+//        var request = new LoginRequest(
+//                "client_credentials",
+//                "7ef1cba7337f41ff8c8c5efc69a661af",
+//                "ef9a6e1617fd4c87b710145a4efd0e54"
+//        );
+//        var token = authSpotifyClient.login(request).getAccessToken();
+//
+//        List<Search> albuns = searchSpotifyClient
+//                .getSearch("Bearer" + token)
+//                .
+//    }
+
+
 }

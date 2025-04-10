@@ -2,11 +2,11 @@ package tech.biuldrun.spotify.service;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import tech.biuldrun.spotify.controller.dto.CreateReviewDto;
+import tech.biuldrun.spotify.controller.dto.ReviewResponseDto;
 import tech.biuldrun.spotify.entity.Albuns;
 import tech.biuldrun.spotify.entity.Reviews;
 import tech.biuldrun.spotify.entity.User;
@@ -14,7 +14,6 @@ import tech.biuldrun.spotify.repository.AlbumRepository;
 import tech.biuldrun.spotify.repository.ReviewRepository;
 import tech.biuldrun.spotify.repository.UserRepository;
 
-import java.util.List;
 import java.util.UUID;
 @Service
 public class ReviewService {
@@ -47,6 +46,20 @@ public class ReviewService {
         review.setAlbuns(album);
 
         reviewRepository.save(review);
+    }
+
+    public ReviewResponseDto getReviewsById(UUID reviewId){
+        Reviews reviews = reviewRepository.findByReviewId(UUID.fromString(String.valueOf(reviewId)))
+                .orElseThrow(() -> new RuntimeException("Review not found"));
+
+        return new ReviewResponseDto(
+                reviews.getLogin(),
+                reviews.getReviewId().toString(),
+                reviews.getAlbuns().getName(),
+                reviews.getRating(),
+                reviews.getComment(),
+                reviews.getUser().getLogin()
+        );
     }
 
 

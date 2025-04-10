@@ -38,12 +38,13 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/spotify/api/albumsReleases").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/album").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/album/search").permitAll()
-
                         .requestMatchers(HttpMethod.GET, "/v1/album/{albumId}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/v1/album").permitAll()
                         .requestMatchers(HttpMethod.POST, "/review").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/users").permitAll()
                         .requestMatchers(HttpMethod.DELETE, "/v1/album/{albumId}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/review/{reviewId}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/spotify/api/v1/artists").permitAll()
                         .anyRequest().authenticated() // Requer autenticação para outras requisições
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

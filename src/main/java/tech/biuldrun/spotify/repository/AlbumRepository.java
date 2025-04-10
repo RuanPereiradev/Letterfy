@@ -5,6 +5,7 @@
     import org.springframework.data.repository.query.Param;
     import org.springframework.stereotype.Repository;
     import tech.biuldrun.spotify.entity.Albuns;
+    import tech.biuldrun.spotify.entity.Reviews;
 
     import java.util.List;
     import java.util.Optional;
@@ -26,4 +27,5 @@
         Albuns findByName(String name);
 
         List<Albuns>findByNameContainingIgnoreCase(String name);
+
     }

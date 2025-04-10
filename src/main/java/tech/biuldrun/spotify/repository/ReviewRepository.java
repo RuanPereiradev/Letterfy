@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface ReviewRepository  extends JpaRepository<Reviews, UUID> {
     Optional<Reviews> findByUser(User user); // Método para buscar conta pelo usuário
-
+    Optional<Reviews> findByReviewId(UUID reviewId);
 
 }
