@@ -1,25 +1,20 @@
-# Etapa 1: build
-FROM maven:3.9.3-eclipse-temurin-17 AS build
+# Estágio 1: Build
+FROM openjdk:23-jdk-slim AS build
 
 WORKDIR /app
-
-# Copia apenas os arquivos essenciais primeiro (para melhor cache)
 COPY pom.xml .
+RUN apt-get update && apt-get install -y maven
+RUN mvn dependency:go-offline
+
 COPY src ./src
+RUN mvn clean package -DskipTests -X
 
-# Executa o build, pulando os testes
-RUN mvn clean package -DskipTests=true
+# Verificar se o JAR foi gerado
+RUN ls -l /app/target
 
-# Etapa 2: imagem final com Java
-FROM eclipse-temurin:17-jdk
-
+# Estágio 2: Criação da imagem final
+FROM openjdk:23-jdk-slim
 WORKDIR /app
-
-# Copia o .jar gerado na etapa de build
-COPY --from=build /app/target/*.jar app.jar
-
-# Expõe a porta padrão (ajuste se necessário)
+COPY --from=build /app/target/letterfy-0.0.1-SNAPSHOT.jar /app/spotify-1.0-SNAPSHOT.jar
 EXPOSE 8080
-
-# Comando para iniciar a aplicação
-ENTRYPOINT ["java", "-jar", "app.jar"]
+CMD ["java", "-jar", "spotify-1.0-SNAPSHOT.jar"]
