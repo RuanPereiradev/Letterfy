@@ -12,7 +12,7 @@ RUN mvn clean package -DskipTests -X
 FROM openjdk:23-jdk-slim
 
 WORKDIR /app
-COPY --from=build /app/target/spotify-1.0-SNAPSHOT.jar /app/spotify-1.0-SNAPSHOT.jar
+COPY --from=builder /app/target/letterfy-0.0.1-SNAPSHOT.jar /app/letterfy.jar
 
 # Exponha a porta
 EXPOSE 8080
