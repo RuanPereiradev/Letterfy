@@ -1,13 +1,20 @@
-# Etapa de build com Java 23
-FROM maven:3.9.4-eclipse-temurin-23 AS build
+# Estágio de build
+FROM openjdk:23-jdk-slim AS build
+
 WORKDIR /app
 COPY pom.xml .
+RUN apt-get update && apt-get install -y maven
+RUN mvn dependency:go-offline
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN mvn clean package -DskipTests -X
 
-# Etapa de execução com Java 23
-FROM eclipse-temurin:23-jdk
+# Estágio final
+FROM openjdk:23-jdk-slim
+
 WORKDIR /app
-COPY --from=build /app/target/*.jar app.jar
+COPY --from=build /app/target/spotify-1.0-SNAPSHOT.jar /app/spotify-1.0-SNAPSHOT.jar
+
+# Exponha a porta
 EXPOSE 8080
-CMD ["java", "-jar", "app.jar"]
+
+CMD ["java", "-jar", "/app/spotify-1.0-SNAPSHOT.jar"]
