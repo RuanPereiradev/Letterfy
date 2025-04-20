@@ -1,5 +1,7 @@
 package tech.biuldrun.spotify.service;
 
+import jakarta.persistence.Cacheable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 //import tech.biuldrun.spotify.controller.dto.AlbumResponseDto;
 import tech.biuldrun.spotify.controller.dto.AlbumResponseDto;
@@ -17,6 +19,8 @@ import java.util.UUID;
 public class AlbumService {
 
 
+
+    @Autowired
     private  AlbumRepository albumRepository;
 
     public AlbumService(AlbumRepository albumRepository, ReviewRepository reviewRepository) {this.albumRepository = albumRepository;
@@ -41,9 +45,15 @@ public class AlbumService {
 
     }
 
+    @Cacheable("albuns")
+    public List<Albuns> findAllWithCache(){
+        return listAlbuns();
+    }
+
     public List<Albuns> listAlbuns() {
         return albumRepository.findAll();
     }
+
 
 
 
