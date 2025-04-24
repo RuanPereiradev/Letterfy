@@ -8,15 +8,17 @@ services:
       - MYSQL_ROOT_PASSWORD=verysecret
       - MYSQL_USER=myuser
     ports:
-      - '3306:3306'  # Mapeia a porta 3306 do MySQL para a mesma porta na máquina local
+      - '3306:3306'
     networks:
       - mynetwork
-    volumes:
-      - mysql-data:/var/lib/mysql  # Para persistência de dados
+#
+#  redis:
+#    image: redis:latest
+#    ports:
+#      - '6379:6379'
+#    networks:
+#      - mynetwork
 
 networks:
   mynetwork:
     driver: bridge
-
-volumes:
-  mysql-data:

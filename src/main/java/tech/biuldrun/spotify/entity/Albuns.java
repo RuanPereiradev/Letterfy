@@ -7,6 +7,7 @@
     import lombok.*;
     import org.hibernate.annotations.CreationTimestamp;
 
+    import java.io.Serializable;
     import java.time.Instant;
     import java.util.List;
     import java.util.UUID;
@@ -17,7 +18,7 @@
     @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
     @Entity
     @Table(name = "tb_albuns")
-    public class Albuns {
+    public class Albuns implements Serializable {
 
         @Setter
         @Id
@@ -42,12 +43,12 @@
         @Column(name = "image_url")
         private List<String> images;
 
-        @OneToMany(mappedBy = "albuns", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "albuns", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
         @JsonManagedReference
-        @ToString.Exclude // Evita a impressão de reviews ao chamar toString()
+        @ToString.Exclude
         private List<Reviews> reviews;
 
-        @CreationTimestamp // Indica que o campo será preenchido automaticamente com o timestamp da criação
+        @CreationTimestamp
         private Instant createdAt;
 
         // Construtor para a criação de novos álbuns com as imagens

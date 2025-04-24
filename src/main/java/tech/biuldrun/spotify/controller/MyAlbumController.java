@@ -35,10 +35,11 @@ public class MyAlbumController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Albuns>> listAlbuns(){
-        var albuns = albumService.listAlbuns();
-        return ResponseEntity.ok(albuns);
+    public ResponseEntity<List<AlbumResponseDto>> listAlbuns() {
+        var albuns = albumService.listAlbuns(); // <- já está convertendo para DTO
+        return ResponseEntity.ok(albuns); // <- agora tá certo!
     }
+
 
     @GetMapping("/{albumId}")
         public ResponseEntity<AlbumResponseDto>getAlbunsById(@PathVariable("albumId") String albumId){
