@@ -1,6 +1,5 @@
 ## Itens de Configuração Mapeados    
 
-
 | ID   | Descrição                        | Repositório                                             | Branch padrão | Tags                |
 |------|----------------------------------|---------------------------------------------------------|---------------|---------------------|
 | IC01 | Código-fonte backend (Java/Spring)| https://github.com/RuanPereiradev/Letterfy              | main          | backend, spring     |
@@ -10,6 +9,7 @@
 | IC05 | Scripts de banco de dados         | https://github.com/RuanPereiradev/Letterfy              | main          | backup.sql, db      |
 | IC06 | Documentação do projeto           | https://github.com/RuanPereiradev/Letterfy              | main          | README.md, docs     |
 | IC07 | Configuração de segurança (CORS, JWT) | https://github.com/RuanPereiradev/Letterfy          | main          | security, config    |
+| IC08 | Arquivo .gitignore do projeto   | https://github.com/RuanPereiradev/Letterfy              | main          | gitignore, controle |
 
 
 
