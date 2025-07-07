@@ -1,10 +1,15 @@
 package tech.biuldrun.spotify.service;
 
+<<<<<<< HEAD
 import jakarta.transaction.Transactional;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
+=======
+import jakarta.persistence.Cacheable;
+import org.springframework.beans.factory.annotation.Autowired;
+>>>>>>> 441102582e3d508c87b3e78c2f4b003587f6334f
 import org.springframework.stereotype.Service;
 //import tech.biuldrun.spotify.controller.dto.AlbumResponseDto;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,7 +30,13 @@ import java.util.stream.Collectors;
 public class AlbumService {
 
 
+<<<<<<< HEAD
     private AlbumRepository albumRepository;
+=======
+
+    @Autowired
+    private  AlbumRepository albumRepository;
+>>>>>>> 441102582e3d508c87b3e78c2f4b003587f6334f
 
 
     public AlbumService(AlbumRepository albumRepository) {
@@ -53,6 +64,7 @@ public class AlbumService {
 
     }
 
+<<<<<<< HEAD
     public List<AlbumResponseDto> listAlbuns() {
         return albumRepository.findAll().stream()
                 .map(AlbumResponseDto::new)
@@ -61,6 +73,21 @@ public class AlbumService {
 
     @Transactional
     public AlbumResponseDto getAlbumById(String albumId) {
+=======
+    @Cacheable("albuns")
+    public List<Albuns> findAllWithCache(){
+        return listAlbuns();
+    }
+
+    public List<Albuns> listAlbuns() {
+        return albumRepository.findAll();
+    }
+
+
+
+
+    public AlbumResponseDto getAlbumById(String albumId){
+>>>>>>> 441102582e3d508c87b3e78c2f4b003587f6334f
         Albuns albuns = albumRepository.findByAlbumId(UUID.fromString(albumId))
                 .orElseThrow(() -> new RuntimeException("Album not found"));
         return new AlbumResponseDto(
