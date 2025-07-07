@@ -1,6 +1,8 @@
 package tech.biuldrun.spotify.service;
 
 import jakarta.transaction.Transactional;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,11 +27,13 @@ public class AlbumService {
 
     private AlbumRepository albumRepository;
 
+
     public AlbumService(AlbumRepository albumRepository) {
         this.albumRepository = albumRepository;
     }
 
 
+    @CachePut(value = "ALBUM_CACHE", key = "#result.albumId()")
     public void createAlbum(CreateAlbumDto createAlbumDto) {
 
         if (albumRepository.existsBySpotifyId(createAlbumDto.spotifyId())) {
@@ -38,8 +42,6 @@ public class AlbumService {
         if (albumRepository.existsByName(createAlbumDto.name())) {
             throw new IllegalArgumentException("Album already exists(name)");
         }
-
-
         //dto->entity
         var album = new Albuns(
                 createAlbumDto.spotifyId(),
@@ -47,18 +49,15 @@ public class AlbumService {
                 createAlbumDto.artists(),
                 createAlbumDto.images()
         );
-
         albumRepository.save(album);
 
     }
 
-//    @Cacheable("albuns")
     public List<AlbumResponseDto> listAlbuns() {
         return albumRepository.findAll().stream()
                 .map(AlbumResponseDto::new)
                 .collect(Collectors.toList());
     }
-
 
     @Transactional
     public AlbumResponseDto getAlbumById(String albumId) {
@@ -87,7 +86,8 @@ public class AlbumService {
                 .collect(Collectors.toList());
 
     }
-    //necessita de revisão
+
+    @CacheEvict(value = "ALBUM_CACHE", key = "#albumId")
     public void deleteById(String albumId) {
 
     var id = UUID.fromString(albumId);

@@ -43,7 +43,7 @@
         @Column(name = "image_url")
         private List<String> images;
 
-        @OneToMany(mappedBy = "albuns", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "albuns", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
         @JsonManagedReference
         @ToString.Exclude
         private List<Reviews> reviews;
