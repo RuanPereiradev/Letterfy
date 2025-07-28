@@ -1,7 +1,20 @@
 package tech.biuldrun.spotify.controller.dto;
 
-public record ReviewResponseDto(String reviewId, String albumId, String login, java.math.BigDecimal rating, String comment,
-                                String users) {
+import tech.biuldrun.spotify.entity.Reviews;
 
-    //criando os campos que vou retornar na resposta
+import java.math.BigDecimal;
+
+public record ReviewResponseDto(String reviewId, String albumId, String login,
+                                BigDecimal rating, String comment, String users) {
+    public ReviewResponseDto(Reviews review) {
+        this(
+                review.getReviewId().toString(),
+                review.getAlbuns().getAlbumId().toString(),
+                review.getLogin(),
+                review.getRating(),
+                review.getComment(),
+                String.valueOf(review.getUser())
+        );
+    }
 }
+
